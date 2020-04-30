@@ -14,6 +14,15 @@ vis_ir.enabled = True
 time.sleep(1)
 vis_ir.gain = 0
 vis_ir.integration_time = 1
+
+# first reads are often kinda bogus
+try:
+	lux = "%.2f" % vis_ir.lux
+	uvr = "%d" % uv.uv_raw
+	bb = "%d" % vis_ir.broadband
+	ir = "%d" % vis_ir.infrared
+except:
+	printf("inital read failed.")
      
 while True:
 	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
