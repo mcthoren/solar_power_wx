@@ -22,34 +22,45 @@ vis_ir.integration_time = 1
 
 # first reads are often kinda bogus
 try:
-	lux = "%.2f" % vis_ir.lux
-	uvr = "%d" % uv.uv_raw
-	bb = "%d" % vis_ir.broadband
-	ir = "%d" % vis_ir.infrared
+	lux = vis_ir.lux
+	uvr = uv.uv_raw
+	bb = vis_ir.broadband
+	ir = vis_ir.infrared
 except:
 	printf("inital read failed.")
-     
+
+t_vals = {}
+vals = {}
+counts = {}
+for i in range(0,4):
+	t_vals[i] = vals[i] = counts[i] = 0
+
+time0 = time1 = time.time()
+
 while True:
 	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 
-	# gnuplot and all my other code will accept "??" for "went sideways"
-	try:
-		lux = "%.2f" % vis_ir.lux
-	except :
-		lux = "??"
-	try:
-		uvr = "%d" % uv.uv_raw
-	except:
-		uvr = "??"
-	try:
-		bb = "%d" % vis_ir.broadband
-	except:
-		bb = "??"
-	try:
-		ir = "%d" % vis_ir.infrared
-	except:
-		ir = "??"
+	t_vals[0] = vis_ir.lux
+	t_vals[1] = uv.uv_raw
+	t_vals[2] = vis_ir.broadband
+	t_vals[3] = vis_ir.infrared
 
-	dat = "%s\tlux: %s\tUV: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
-	wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
+	for i in range(0,4):
+		if isinstance(t_vals[i], (float, int)):
+			vals[i] += t_vals[i]
+			counts[i] += 1
+
+	lux = "%.2f" % (vals[0] / counts[0])
+	uvr = "%d" % (vals[1] / counts[1])
+	bb = "%d" % (vals[2] / counts[2])
+	ir = "%d" % (vals[3] / counts[3])
+
+	time1 = time.time()
+	if((time1 - time0) > 60):
+		dat = "%s\tlux: %s\tUV: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
+		wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
+		time0 = time1 = time.time()
+		for i in range(0,4):
+			t_vals[i] = vals[i] = counts[i] = 0
+
 	time.sleep(1)
