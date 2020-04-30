@@ -50,14 +50,18 @@ while True:
 			vals[i] += t_vals[i]
 			counts[i] += 1
 
-	lux = "%.2f" % (vals[0] / counts[0])
+	try:
+		lux = "%.2f" % (vals[0] / counts[0])
+	except:
+		lux = "??"
+
 	uvr = "%d" % (vals[1] / counts[1])
 	bb = "%d" % (vals[2] / counts[2])
 	ir = "%d" % (vals[3] / counts[3])
 
 	time1 = time.time()
 	if((time1 - time0) > 60):
-		dat = "%s\tlux: %s\tUV: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
+		dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
 		wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
 		time0 = time1 = time.time()
 		for i in range(0,4):
