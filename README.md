@@ -19,6 +19,7 @@ Reasons and firsts for this project:
 todo:
 - [x] Lic
 - [x] Readme
-- [ ] init boards
+- [x] init boards
 - [ ] autogain
+- [ ] hook up graphing
 - [ ] finish readme
