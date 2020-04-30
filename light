@@ -26,13 +26,25 @@ except:
      
 while True:
 	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+
+	# gnuplot and all my other code will accept "??" for "went sideways"
 	try:
 		lux = "%.2f" % vis_ir.lux
 	except :
 		lux = "??"
-	uvr = "%d" % uv.uv_raw
-	bb = "%d" % vis_ir.broadband
-	ir = "%d" % vis_ir.infrared
+	try:
+		uvr = "%d" % uv.uv_raw
+	except:
+		uvr = "??"
+	try:
+		bb = "%d" % vis_ir.broadband
+	except:
+		bb = "??"
+	try:
+		ir = "%d" % vis_ir.infrared
+	except:
+		ir = "??"
+
 	dat = "lux: %s, UV: %s, BB: %s, IR, %s" % (lux, uvr, bb, ir)
 	print(ts, "\t", dat, flush=True)
 	time.sleep(1)
