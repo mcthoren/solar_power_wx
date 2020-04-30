@@ -1,15 +1,20 @@
 #!/usr/bin/python3     
 
-import time, datetime, busio, board
+import time, datetime, busio, board, sys
 import adafruit_veml6070
 import adafruit_tsl2561
+
+sys.path.append('/home/ghz/wxlib')
+import wxlib as wx
+
+wx_dir = "/home/ghz/light_wx"
      
 i2c = busio.I2C(board.SCL, board.SDA)
 
 uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
 vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
-# init this tsl sensor
+# init the tsl sensor
 vis_ir.enabled = True
 time.sleep(1)
 vis_ir.gain = 0
@@ -25,7 +30,7 @@ except:
 	printf("inital read failed.")
      
 while True:
-	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 
 	# gnuplot and all my other code will accept "??" for "went sideways"
 	try:
@@ -45,6 +50,6 @@ while True:
 	except:
 		ir = "??"
 
-	dat = "lux: %s, UV: %s, BB: %s, IR, %s" % (lux, uvr, bb, ir)
-	print(ts, "\t", dat, flush=True)
+	dat = "%s\tlux: %s\tUV: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
+	wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
 	time.sleep(1)
