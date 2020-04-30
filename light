@@ -1,0 +1,23 @@
+#!/usr/bin/python3     
+
+import time, datetime, busio, board
+import adafruit_veml6070
+import adafruit_tsl2561
+     
+i2c = busio.I2C(board.SCL, board.SDA)
+
+uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
+sensor = adafruit_tsl2561.TSL2561(i2c)
+     
+while 1:
+	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%FT%TZ")
+	try:
+		lux = "%.2f" % sensor.lux
+	except :
+		lux = "??"
+	uvr = "%d" % uv.uv_raw
+	bb = "%d" % sensor.broadband
+	ir = "%d" % sensor.infrared
+	dat = "lux: %s, UV: %s, BB: %s, IR, %s" % (lux, uvr, bb, ir)
+	print(ts, "\t", dat, flush=True)
+	time.sleep(1)
