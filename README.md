@@ -17,6 +17,8 @@ Reasons and firsts for this project:
 
 
 todo:
-[] init boards
-[] autogain
-[] finish readme
+- [x] Lic
+- [x] Readme
+- [ ] init boards
+- [ ] autogain
+- [ ] finish readme
