@@ -1,6 +1,8 @@
 #!/usr/bin/python3     
 
-import time, datetime, busio, board, sys
+import time, datetime, busio, board, sys, fileinput
+import numpy as np
+import matplotlib.dates as mdates
 import adafruit_veml6070
 import adafruit_tsl2561
 
@@ -8,71 +10,101 @@ sys.path.append('/home/ghz/wxlib')
 import wxlib as wx
 
 wx_dir = "/home/ghz/light_wx"
-     
-i2c = busio.I2C(board.SCL, board.SDA)
+plot_d = wx_dir+'/plots/'
+dat_fname='light_levels'
 
-uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
-vis_ir = adafruit_tsl2561.TSL2561(i2c)
+def plot(ts, n_plate):
+	npoint = 2880 # ~ 48h at 1 point a minute
+	dat_f = ["1000", "0100", "0010", "0001"]
+	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 
-# init the tsl sensor
-vis_ir.enabled = True
-time.sleep(1)
-vis_ir.gain = 0
-vis_ir.integration_time = 1
+	for i in range(0, 4):
+		d_date = (td - datetime.timedelta(i)).strftime("%Y%m%d")
+		d_year = (td - datetime.timedelta(i)).strftime("%Y")
+		dat_f[3 - i] = wx_dir+'/data/'+d_year+'/'+n_plate+'.'+d_date
+		wx.proof_dat_f(dat_f[3 - i])
 
-# first reads are often kinda bogus
-try:
-	lux = vis_ir.lux
-	uvr = uv.uv_raw
-	bb = vis_ir.broadband
-	ir = vis_ir.infrared
-except:
-	printf("inital read failed.")
+	light_dat  = fileinput.input(dat_f)
 
-t_vals = {}
-vals = {}
-counts = {}
-for i in range(0,4):
-	t_vals[i] = vals[i] = counts[i] = 0
+	date, lux, uva, bb, ir = np.loadtxt(light_dat, usecols=(0, 2, 4, 6, 8), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
 
-time0 = time1 = time.time()
+	if date.size < 4:
+		return 0; # not enough points yet. wait for more
 
-while True:
-	ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
+	if date.size < npoints:
+		npoints = date.size - 1
 
-	t_vals[0] = vis_ir.lux
-	t_vals[1] = uv.uv_raw
-	t_vals[2] = vis_ir.broadband
-	t_vals[3] = vis_ir.infrared
+	f_pts  = date.size - npoints
+	t_pts  = date.size
 
-	gain = vis_ir.gain
-	bbt = t_vals[2]
-	if isinstance(gain, (float, int)) and isinstance(bbt, (float, int)):
-		if bbt <= 10 and gain < 1:
-			vis_ir.gain = 1
-		if bbt >= 1000 and gain > 0:
-			vis_ir.gain = 0
+	wx.graph(date[f_pts : t_pts], lux[f_pts : t_pts], "y-", "Illuminance", "Illuminance (lx)", plot_d+'light_lux.png')
 
-	for i in range(0,4):
-		if isinstance(t_vals[i], (float, int)):
-			vals[i] += t_vals[i]
-			counts[i] += 1
+if __name__ == "__main__":
+	i2c = busio.I2C(board.SCL, board.SDA)
 
-	try:
-		lux = "%.2f" % (vals[0] / counts[0])
-	except:
-		lux = "??"
+	uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
+	vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
-	uvr = "%d" % (vals[1] / counts[1])
-	bb = "%d" % (vals[2] / counts[2])
-	ir = "%d" % (vals[3] / counts[3])
-
-	time1 = time.time()
-	if((time1 - time0) > 60):
-		dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
-		wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
-		time0 = time1 = time.time()
-		for i in range(0,4):
-			t_vals[i] = vals[i] = counts[i] = 0
-
+	# init the tsl sensor
+	vis_ir.enabled = True
 	time.sleep(1)
+	vis_ir.gain = 0
+	vis_ir.integration_time = 1
+
+	# first reads are often kinda bogus
+	try:
+		lux = vis_ir.lux
+		uvr = uv.uv_raw
+		bb = vis_ir.broadband
+		ir = vis_ir.infrared
+	except:
+		printf("inital read failed.")
+
+	t_vals = {}
+	vals = {}
+	counts = {}
+	for i in range(0,4):
+		t_vals[i] = vals[i] = counts[i] = 0
+
+	time0 = time1 = time.time()
+
+	while True:
+
+		t_vals[0] = vis_ir.lux
+		t_vals[1] = uv.uv_raw
+		t_vals[2] = vis_ir.broadband
+		t_vals[3] = vis_ir.infrared
+
+		gain = vis_ir.gain
+		bbt = t_vals[2]
+		if isinstance(gain, (float, int)) and isinstance(bbt, (float, int)):
+			if bbt <= 10 and gain < 1:
+				vis_ir.gain = 1
+			if bbt >= 1000 and gain > 0:
+				vis_ir.gain = 0
+
+		for i in range(0,4):
+			if isinstance(t_vals[i], (float, int)):
+				vals[i] += t_vals[i]
+				counts[i] += 1
+
+		try:
+			lux = "%.2f" % (vals[0] / counts[0])
+		except:
+			lux = "??"
+
+		uvr = "%d" % (vals[1] / counts[1])
+		bb = "%d" % (vals[2] / counts[2])
+		ir = "%d" % (vals[3] / counts[3])
+
+		time1 = time.time()
+		if((time1 - time0) > 60):
+			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
+			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
+			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
+			# plot(ts, dat_fname)
+			time0 = time1 = time.time()
+			for i in range(0,4):
+				t_vals[i] = vals[i] = counts[i] = 0
+
+		time.sleep(1)
