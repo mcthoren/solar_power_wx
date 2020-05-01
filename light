@@ -45,6 +45,14 @@ while True:
 	t_vals[2] = vis_ir.broadband
 	t_vals[3] = vis_ir.infrared
 
+	gain = vis_ir.gain
+	bbt = t_vals[2]
+	if isinstance(gain, (float, int)) and isinstance(bbt, (float, int)):
+		if bbt <= 10 and gain < 1:
+			vis_ir.gain = 1
+		if bbt >= 1000 and gain > 0:
+			vis_ir.gain = 0
+
 	for i in range(0,4):
 		if isinstance(t_vals[i], (float, int)):
 			vals[i] += t_vals[i]
@@ -61,7 +69,7 @@ while True:
 
 	time1 = time.time()
 	if((time1 - time0) > 60):
-		dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\n" % (ts, lux, uvr, bb, ir)
+		dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
 		wx.write_out_dat_stamp(ts, 'light_levels', dat, wx_dir)
 		time0 = time1 = time.time()
 		for i in range(0,4):
