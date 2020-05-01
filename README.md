@@ -20,8 +20,8 @@ todo:
 - [x] Lic
 - [x] Readme
 - [x] init boards
-- [ ] build hardware
+- [x] build hardware
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
-- [ ] autogain
+- [x] autogain
 - [ ] hook up graphing
 - [ ] finish readme
