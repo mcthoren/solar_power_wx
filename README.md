@@ -21,7 +21,9 @@ todo:
 - [x] Readme
 - [x] init boards
 - [x] build hardware
+- [ ] build webpage
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
 - [x] autogain
-- [ ] hook up graphing
+- [x] hook up graphing
+- [ ] hook up syncing to webserver
 - [ ] finish readme
