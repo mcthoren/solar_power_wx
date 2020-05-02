@@ -1,6 +1,6 @@
 #!/usr/bin/python3     
 
-import time, datetime, busio, board, sys, fileinput
+import time, datetime, busio, board, sys, fileinput, os
 import numpy as np
 import matplotlib.dates as mdates
 import adafruit_veml6070
@@ -118,6 +118,8 @@ if __name__ == "__main__":
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
 			plot(ts, dat_fname)
+			# wx7_sync defined in ~/.ssh/config with host, user, key, etc.
+			os.system('/usr/bin/rsync --timeout=60 -ur ' + wx_dir + '/* wx7_sync:/wx7/')
 			time0 = time1 = time.time()
 			for i in range(0,4):
 				t_vals[i] = vals[i] = counts[i] = 0
