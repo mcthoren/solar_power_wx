@@ -22,7 +22,7 @@ to do:
 - [x] readme
 - [x] init boards
 - [x] build hardware
-- [ ] build web page
+- [x] build web page
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
 - [x] autogain
 - [x] hook up graphing
