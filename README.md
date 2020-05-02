@@ -1,4 +1,4 @@
-### This is a project for using a Raspberry Pi Zero W to measure light conditions on our balcony.
+#### This is a project for using a Raspberry Pi Zero W to measure light conditions on our balcony.
 
 
 Reasons and firsts for this project:
@@ -14,7 +14,7 @@ Reasons and firsts for this project:
     * [Datasheet](http://www.adafruit.com/datasheets/TSL2561.pdf)
     * [Adafruit Docs](https://learn.adafruit.com/tsl2561?view=all)
 
-#### Many thanks to Adafruit for all the wonderful docs, boards, and code.
+##### Many thanks to Adafruit for all the wonderful docs, boards, and examples.
 
 
 to do:
