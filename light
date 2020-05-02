@@ -13,8 +13,18 @@ wx_dir = "/home/ghz/light_wx"
 plot_d = wx_dir+'/plots/'
 dat_fname='light_levels'
 
+def conv_qs(data):
+	if data == b'??' or data == '??':
+		return 0.0
+	else:
+		return data
+
+# this is. in the end, coverting utf-8 data to utf-8 data, cuz somewhere it got thought of as bytes.
+def u2u(data):
+	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode("utf8"))
+
 def plot(ts, n_plate):
-	npoint = 2880 # ~ 48h at 1 point a minute
+	npoints = 2880 # ~ 48h at 1 point a minute
 	dat_f = ["1000", "0100", "0010", "0001"]
 	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 
@@ -26,7 +36,9 @@ def plot(ts, n_plate):
 
 	light_dat  = fileinput.input(dat_f)
 
-	date, lux, uva, bb, ir = np.loadtxt(light_dat, usecols=(0, 2, 4, 6, 8), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	# doesn't work yet. appears to run into to every sort of type and encoding mismatch possible.
+	#date, lux, uva, bb, ir = np.loadtxt(light_dat, usecols=(0, 2, 4, 6, 8), unpack=True, converters={ 0: mdates.strpdate2num('%Y%m%d%H%M%S')})
+	date, lux = np.loadtxt(light_dat, usecols=(0, 2), unpack=True,  converters={ 0: u2u, 2: conv_qs})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
@@ -44,6 +56,8 @@ if __name__ == "__main__":
 
 	uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
+
+	wx.proof_dir(plot_d)
 
 	# init the tsl sensor
 	vis_ir.enabled = True
@@ -102,7 +116,7 @@ if __name__ == "__main__":
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
-			# plot(ts, dat_fname)
+			plot(ts, dat_fname)
 			time0 = time1 = time.time()
 			for i in range(0,4):
 				t_vals[i] = vals[i] = counts[i] = 0
