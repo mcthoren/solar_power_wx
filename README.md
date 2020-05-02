@@ -4,6 +4,7 @@ This is a project for using a Raspberry Pi Zero W to measure light conditions on
 Reasons and firsts for this project:
 * Learning more python3, and migrating my python2 stuff to python3 stuff.
 * Learning circuit python.
+* Practicing more github markdown.
 * First use of a BSD/ISC sorta license. I usually use public domain, but the legality of PD is apparently not that well tested across many jurisdictions.
 * And finally the point of all this is to actually measure something, namely light. To do this I'm using:
   * An Adafruit VEML6070 breakout board.
