@@ -24,7 +24,8 @@ to do:
 - [x] build hardware
 - [x] build web page
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
+- [ ] _actually_ move from windowsill to balcony
 - [x] autogain
 - [x] hook up graphing
-- [ ] hook up syncing to web server
-- [ ] finish readme
+- [x] hook up syncing to web server
+- [x] finish readme
