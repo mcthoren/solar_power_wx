@@ -1,4 +1,4 @@
-#!/usr/bin/python3     
+#!/usr/bin/python3
 
 import time, datetime, busio, board, sys, fileinput, os
 import numpy as np
@@ -86,6 +86,10 @@ if __name__ == "__main__":
 	while True:
 
 		t_vals[0] = vis_ir.lux
+		uv.wake()
+		# the two sensors screw with each other. we have to wake up the uv after
+		# every tsl read, and then wait a second
+		time.sleep(1)
 		t_vals[1] = uv.uv_raw
 		t_vals[2] = vis_ir.broadband
 		t_vals[3] = vis_ir.infrared
@@ -123,5 +127,3 @@ if __name__ == "__main__":
 			time0 = time1 = time.time()
 			for i in range(0,4):
 				t_vals[i] = vals[i] = counts[i] = 0
-
-		time.sleep(1)
