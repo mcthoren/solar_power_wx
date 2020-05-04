@@ -91,27 +91,29 @@ if __name__ == "__main__":
 		# every tsl read, and then wait a second
 		time.sleep(1)
 		t_vals[1] = uv.uv_raw
-		t_vals[2] = vis_ir.broadband
-		t_vals[3] = vis_ir.infrared
 
 		gain = vis_ir.gain
-		bbt = t_vals[2]
+		bbt = vis_ir.broadband
 		if isinstance(gain, (float, int)) and isinstance(bbt, (float, int)):
 			if bbt <= 10 and gain < 1:
 				vis_ir.gain = 1
 			if bbt >= 1000 and gain > 0:
 				vis_ir.gain = 0
 
+		gain = vis_ir.gain
+		if gain > 0:
+			t_vals[2] = vis_ir.broadband / 16.0
+			t_vals[3] = vis_ir.infrared / 16.0
+		else:
+			t_vals[2] = vis_ir.broadband
+			t_vals[3] = vis_ir.infrared
+
 		for i in range(0,4):
 			if isinstance(t_vals[i], (float, int)):
 				vals[i] += t_vals[i]
 				counts[i] += 1
 
-		try:
-			lux = "%.2f" % (vals[0] / counts[0])
-		except:
-			lux = "??"
-
+		lux = "%.2f" % (vals[0] / counts[0])
 		uvr = "%d" % (vals[1] / counts[1])
 		bb = "%d" % (vals[2] / counts[2])
 		ir = "%d" % (vals[3] / counts[3])
