@@ -24,7 +24,7 @@ def u2u(data):
 	return mdates.strpdate2num('%Y%m%d%H%M%S')(data.decode("utf8"))
 
 def plot(ts, n_plate):
-	npoints = 2880 # ~ 48h at 1 point a minute
+	npoints = 2085 # about 3 days in reality
 	dat_f = ["1000", "0100", "0010", "0001"]
 	td = datetime.datetime.strptime(ts, "%Y%m%d%H%M%S")
 
