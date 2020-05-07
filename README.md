@@ -14,10 +14,10 @@ Reasons and firsts for this project:
     * [Datasheet](http://www.adafruit.com/datasheets/TSL2561.pdf)
     * [Adafruit Docs](https://learn.adafruit.com/tsl2561?view=all)
 
-* This code can be found in the following places:
-  * https://wx7.slackology.net/light_wx.html	<--page
-  * https://github.com/mcthoren/light_wx	<--code
-  * https://wx7.slackology.net/			<--code, data, plots, page
+This code can be found in the following places:
+* https://wx7.slackology.net/light_wx.html	<--page
+* https://github.com/mcthoren/light_wx		<--code
+* https://wx7.slackology.net/			<--code, data, plots, page
 
 
 ##### Many thanks to Adafruit for all the wonderful docs, boards, and examples.
