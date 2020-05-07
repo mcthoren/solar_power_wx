@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# -*- coding: UTF-8 -*-
 
 import time, datetime, busio, board, sys, fileinput, os
 import numpy as np
@@ -78,7 +79,7 @@ if __name__ == "__main__":
 	t_vals = {}
 	vals = {}
 	counts = {}
-	for i in range(0,4):
+	for i in range(0,5):
 		t_vals[i] = vals[i] = counts[i] = 0
 
 	time0 = time1 = time.time()
@@ -108,24 +109,30 @@ if __name__ == "__main__":
 			t_vals[2] = vis_ir.broadband
 			t_vals[3] = vis_ir.infrared
 
-		for i in range(0,4):
+		t_vals[4] = float(wx.pi_temp_read()) / 1000
+
+		for i in range(0,5):
 			if isinstance(t_vals[i], (float, int)):
 				vals[i] += t_vals[i]
 				counts[i] += 1
 
-		lux = "%.2f" % (vals[0] / counts[0])
-		uvr = "%d" % (vals[1] / counts[1])
-		bb = "%d" % (vals[2] / counts[2])
-		ir = "%d" % (vals[3] / counts[3])
+		try:
+			lux = "%.2f" % (vals[0] / counts[0])
+			uvr = "%d" % (vals[1] / counts[1])
+			bb = "%d" % (vals[2] / counts[2])
+			ir = "%d" % (vals[3] / counts[3])
+			pi_t = "%.2f" % (vals[4] / counts[4])
+		except:
+			continue
 
 		time1 = time.time()
 		if((time1 - time0) > 60):
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
-			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\n" % (ts, lux, uvr, bb, ir, gain)
+			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
 			plot(ts, dat_fname)
 			# wx7_sync defined in ~/.ssh/config with host, user, key, etc.
 			os.system('/usr/bin/rsync --timeout=60 -ur ' + wx_dir + '/* wx7_sync:/wx7/')
 			time0 = time1 = time.time()
-			for i in range(0,4):
+			for i in range(0,5):
 				t_vals[i] = vals[i] = counts[i] = 0
