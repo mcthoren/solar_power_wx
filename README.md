@@ -36,4 +36,4 @@ to do:
 - [x] hook up syncing to web server
 - [x] finish readme
 - [x] add temp
-- [ ] graph temp
+- [x] graph temp

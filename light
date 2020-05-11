@@ -37,7 +37,8 @@ def plot(ts, n_plate):
 
 	light_dat  = fileinput.input(dat_f)
 
-	date, lux, uva, bb, ir = np.loadtxt(light_dat, usecols=(0, 2, 4, 6, 8), unpack=True,  converters={ 0: u2u, 2: conv_qs, 4: conv_qs, 6: conv_qs, 8: conv_qs})
+	date, lux, uva, bb, ir , pt = np.loadtxt(light_dat, usecols=(0, 2, 4, 6, 8, 12), unpack=True,  \
+		converters={ 0: u2u, 2: conv_qs, 4: conv_qs, 6: conv_qs, 8: conv_qs, 12: conv_qs})
 
 	if date.size < 4:
 		return 0; # not enough points yet. wait for more
@@ -52,6 +53,7 @@ def plot(ts, n_plate):
 	wx.graph(date[f_pts : t_pts], uva[f_pts : t_pts], "b-", "UVA Illuminance", "Illuminance (counts)", plot_d+'light_uva.png')
 	wx.graph(date[f_pts : t_pts], bb[f_pts : t_pts], "g-", "Broad Band Illuminance", "Illuminance (counts)", plot_d+'light_bb.png')
 	wx.graph(date[f_pts : t_pts], ir[f_pts : t_pts], "r-", "IR Illuminance", "Illuminance (counts)", plot_d+'light_ir.png')
+	wx.graph(date[f_pts : t_pts], pt[f_pts : t_pts], "c-", "Pi Temp", "Temp °C", plot_d+'light_temp.png')
 
 if __name__ == "__main__":
 	i2c = busio.I2C(board.SCL, board.SDA)
