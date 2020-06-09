@@ -76,7 +76,7 @@ if __name__ == "__main__":
 		bb = vis_ir.broadband
 		ir = vis_ir.infrared
 	except:
-		printf("inital read failed.")
+		print("inital read failed.")
 
 	t_vals = {}
 	vals = {}
