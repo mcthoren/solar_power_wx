@@ -71,12 +71,14 @@ if __name__ == "__main__":
 
 	# first reads are often kinda bogus
 	try:
+		print('+', end='', flush=True)
 		lux = vis_ir.lux
 		uvr = uv.uv_raw
 		bb = vis_ir.broadband
 		ir = vis_ir.infrared
 	except:
 		print("inital read failed.")
+		exit()
 
 	t_vals = {}
 	vals = {}
@@ -119,22 +121,32 @@ if __name__ == "__main__":
 				counts[i] += 1
 
 		try:
+			print('.', end='', flush=True)
 			lux = "%.2f" % (vals[0] / counts[0])
 			uvr = "%d" % (vals[1] / counts[1])
 			bb = "%d" % (vals[2] / counts[2])
 			ir = "%d" % (vals[3] / counts[3])
 			pi_t = "%.2f" % (vals[4] / counts[4])
 		except:
+			print("computing averages failed.")
 			continue
 
 		time1 = time.time()
 		if((time1 - time0) > 60):
+			print('*', end='', flush=True)
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
 			plot(ts, dat_fname)
-			# wx7_sync defined in ~/.ssh/config with host, user, key, etc.
-			os.system('/usr/bin/rsync --timeout=60 -ur ' + wx_dir + '/* wx7_sync:/wx7/')
+
+			print('r', end='', flush=True)
+			try:
+				# wx7_sync defined in ~/.ssh/config with host, user, key, etc.
+				os.system('/usr/bin/rsync --timeout=60 -ur ' + wx_dir + '/* wx7_sync:/wx7/')
+			except:
+				print("rsync failed.")
+			print('e', end='', flush=True)
+
 			time0 = time1 = time.time()
 			for i in range(0,5):
 				t_vals[i] = vals[i] = counts[i] = 0
