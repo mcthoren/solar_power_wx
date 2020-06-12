@@ -159,7 +159,7 @@ if __name__ == "__main__":
 				print("rsync failed.")
 
 			if(args.debug):
-				print('e', end='', flush=True)
+				print(counts, end='', flush=True)
 
 			time0 = time1 = time.time()
 			for i in range(0,5):
