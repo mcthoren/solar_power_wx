@@ -30,6 +30,7 @@ to do:
 - [x] build hardware
 - [x] build web page
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
+- [ ] fix whatever bug causes illuminance/bb data fall-out in bright weather. (silly for a light sensor)
 - [ ] _actually_ move from windowsill to balcony
 - [x] autogain
 - [x] hook up graphing
