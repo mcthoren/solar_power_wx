@@ -111,13 +111,14 @@ if __name__ == "__main__":
 			if bbt >= 1000 and gain > 0.5:
 				vis_ir.gain = 0
 
-		gain = vis_ir.gain
-		if gain > 0.5:
-			t_vals[2] = vis_ir.broadband / 16.0
-			t_vals[3] = vis_ir.infrared / 16.0
-		else:
-			t_vals[2] = vis_ir.broadband
-			t_vals[3] = vis_ir.infrared
+		gain = vis_ir.gain			# we might have just changed this, recheck it.
+		if isinstance(gain, (float, int)):	# we don't always get types that make sense.
+			if gain > 0.5:
+				t_vals[2] = vis_ir.broadband / 16.0
+				t_vals[3] = vis_ir.infrared / 16.0
+			else:
+				t_vals[2] = vis_ir.broadband
+				t_vals[3] = vis_ir.infrared
 
 		t_vals[4] = float(wx.pi_temp_read()) / 1000
 
