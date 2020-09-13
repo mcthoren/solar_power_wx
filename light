@@ -55,6 +55,20 @@ def plot(ts, n_plate):
 	wx.graph(date[f_pts : t_pts], ir[f_pts : t_pts], "r-", "IR Illuminance", "Illuminance (counts)", plot_d+'light_ir.png')
 	wx.graph(date[f_pts : t_pts], pt[f_pts : t_pts], "c-", "Pi Temp", "Temp °C", plot_d+'light_temp.png')
 
+# part of the ongoing effort to keeps the two sensors from locking up when it's bright out.
+def uv_read(uv):
+	uv.wake()
+
+	# we get 0 if we don't wait first.
+	time.sleep(1)
+
+	# first reads are kinda bogus after wake.
+	uvr = uv.uv_raw
+	uvr = uv.uv_raw
+	uvr = uv.uv_raw
+	uv.sleep()
+	return uvr
+
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Record, graph, and upload ambient light levels.')
 	parser.add_argument('-d', dest = 'debug', action = 'store_true', help='turn on debug chars')
@@ -62,7 +76,7 @@ if __name__ == "__main__":
 
 	i2c = busio.I2C(board.SCL, board.SDA)
 
-	uv = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
+	uv_sens = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
 	wx.proof_dir(plot_d)
@@ -79,7 +93,6 @@ if __name__ == "__main__":
 			print('+', end='', flush=True)
 
 		lux = vis_ir.lux
-		uvr = uv.uv_raw
 		bb = vis_ir.broadband
 		ir = vis_ir.infrared
 	except:
@@ -97,11 +110,7 @@ if __name__ == "__main__":
 	while True:
 
 		t_vals[0] = vis_ir.lux
-		uv.wake()
-		# the two sensors screw with each other. we have to wake up the uv after
-		# every tsl read, and then wait a second
-		time.sleep(1)
-		t_vals[1] = uv.uv_raw
+		t_vals[1] = uv_read(uv_sens)
 
 		gain = vis_ir.gain
 		bbt = vis_ir.broadband
