@@ -140,23 +140,25 @@ if __name__ == "__main__":
 				vals[i] += t_vals[i]
 				counts[i] += 1
 
-		try:
-			if(args.debug):
-				print('.', end='', flush=True)
-
-			lux = "%.2f" % (vals[0] / counts[0])
-			uvr = "%d" % (vals[1] / counts[1])
-			bb = "%d" % (vals[2] / counts[2])
-			ir = "%d" % (vals[3] / counts[3])
-			pi_t = "%.2f" % (vals[4] / counts[4])
-		except:
-			print("computing averages failed.")
-			continue
+		if(args.debug):
+			print('.', end='', flush=True)
 
 		time1 = time.time()
 		if((time1 - time0) > 60):
+
+			try:
+				lux = "%.2f" % (vals[0] / counts[0])
+				uvr = "%d" % (vals[1] / counts[1])
+				bb = "%d" % (vals[2] / counts[2])
+				ir = "%d" % (vals[3] / counts[3])
+				pi_t = "%.2f" % (vals[4] / counts[4])
+			except:
+				print("computing averages failed.")
+				continue
+
 			if(args.debug):
 				print('*', end='', flush=True)
+
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
