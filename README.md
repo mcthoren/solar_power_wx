@@ -31,7 +31,7 @@ to do:
 - [x] build web page
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
 - [x] fix whatever bug causes illuminance/bb data fall-out in bright weather. (silly for a light sensor)
-- [ ] fix whatever causes so many broken reads in bright light
+- [x] fix whatever causes so many broken reads in bright light
 - [x] _actually_ move from windowsill to balcony
 - [x] autogain
 - [x] hook up graphing
