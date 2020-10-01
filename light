@@ -60,7 +60,7 @@ def uv_read(uv):
 	uv.wake()
 
 	# we get 0 if we don't wait first.
-	time.sleep(1)
+	time.sleep(0.9)
 
 	# first reads are kinda bogus after wake.
 	uvr = uv.uv_raw
@@ -112,7 +112,7 @@ if __name__ == "__main__":
 		t_vals[1] = uv_read(uv_sens)
 
 		vis_ir.enabled = True
-		time.sleep(0.1)
+		time.sleep(0.2) # we seem to be getting zeros in the dark
 		t_vals[0] = vis_ir.lux
 
 		gain = vis_ir.gain
@@ -147,17 +147,25 @@ if __name__ == "__main__":
 		if((time1 - time0) > 60):
 
 			try:
+				dbg_step = 0
 				lux = "%.2f" % (vals[0] / counts[0])
+				dbg_step = 1
 				uvr = "%d" % (vals[1] / counts[1])
+				dbg_step = 2
 				bb = "%d" % (vals[2] / counts[2])
+				dbg_step = 3
 				ir = "%d" % (vals[3] / counts[3])
+				dbg_step = 4
 				pi_t = "%.2f" % (vals[4] / counts[4])
+				dbg_step = 5
 			except:
 				# no idea how this keeps happening, but it does.
 				# toss everything and start main loop over again.
-				print("computing averages failed.")
+				print("computing averages failed: ", dbg_step)
 				time0 = time1 = time.time()
 				for i in range(0,5):
+					print("\n")
+					print("i: ", i, "vals[i]: ", vals[i], "counts[i]: ", counts[i])
 					t_vals[i] = vals[i] = counts[i] = 0
 				continue
 
