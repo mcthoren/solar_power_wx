@@ -112,7 +112,10 @@ if __name__ == "__main__":
 		t_vals[1] = uv_read(uv_sens)
 
 		vis_ir.enabled = True
-		time.sleep(0.2) # we seem to be getting zeros in the dark
+
+		# we seem to be getting bogus values in the dark
+		time.sleep(0.2)
+
 		t_vals[0] = vis_ir.lux
 
 		gain = vis_ir.gain
