@@ -153,7 +153,12 @@ if __name__ == "__main__":
 				ir = "%d" % (vals[3] / counts[3])
 				pi_t = "%.2f" % (vals[4] / counts[4])
 			except:
+				# no idea how this keeps happening, but it does.
+				# toss everything and start main loop over again.
 				print("computing averages failed.")
+				time0 = time1 = time.time()
+				for i in range(0,5):
+					t_vals[i] = vals[i] = counts[i] = 0
 				continue
 
 			if(args.debug):
