@@ -113,9 +113,11 @@ if __name__ == "__main__":
 
 		vis_ir.enabled = True
 
-		# we seem to be getting bogus values in the dark
-		time.sleep(0.2)
+		# we get bogus values in the dark if we don't wait a bit first
+		time.sleep(0.5)
 
+		t_vals[0] = vis_ir.lux
+		t_vals[0] = vis_ir.lux
 		t_vals[0] = vis_ir.lux
 
 		gain = vis_ir.gain
@@ -162,13 +164,14 @@ if __name__ == "__main__":
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
 			except:
-				# no idea how this keeps happening, but it does.
+				# this can happen if z.B. we never get a valid count for the lux
 				# toss everything and start main loop over again.
 				print("computing averages failed: ", dbg_step)
+				if(args.debug):
+					print("vals: ", vals)
+					print("counts: ", counts)
 				time0 = time1 = time.time()
 				for i in range(0,5):
-					print("\n")
-					print("i: ", i, "vals[i]: ", vals[i], "counts[i]: ", counts[i])
 					t_vals[i] = vals[i] = counts[i] = 0
 				continue
 
