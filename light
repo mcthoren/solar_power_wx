@@ -117,7 +117,9 @@ if __name__ == "__main__":
 		time.sleep(0.5)
 
 		t_vals[0] = vis_ir.lux
+		time.sleep(0.1)
 		t_vals[0] = vis_ir.lux
+		time.sleep(0.1)
 		t_vals[0] = vis_ir.lux
 
 		gain = vis_ir.gain
@@ -149,7 +151,7 @@ if __name__ == "__main__":
 			print('.', end='', flush=True)
 
 		time1 = time.time()
-		if((time1 - time0) > 60):
+		if((time1 - time0) > 70):
 
 			try:
 				dbg_step = 0
@@ -169,7 +171,7 @@ if __name__ == "__main__":
 				print("computing averages failed: ", dbg_step)
 				if(args.debug):
 					print("vals: ", vals)
-					print("counts: ", counts)
+					print("counts: ", counts, flush=True)
 				time0 = time1 = time.time()
 				for i in range(0,5):
 					t_vals[i] = vals[i] = counts[i] = 0
@@ -193,7 +195,7 @@ if __name__ == "__main__":
 				print("rsync failed.")
 
 			if(args.debug):
-				print(counts, end='', flush=True)
+				print(counts, flush=True)
 
 			time0 = time1 = time.time()
 			for i in range(0,5):
