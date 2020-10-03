@@ -105,8 +105,6 @@ if __name__ == "__main__":
 	for i in range(0,5):
 		t_vals[i] = vals[i] = counts[i] = 0
 
-	time0 = time1 = time.time()
-
 	while True:
 
 		t_vals[1] = uv_read(uv_sens)
@@ -150,8 +148,8 @@ if __name__ == "__main__":
 		if(args.debug):
 			print('.', end='', flush=True)
 
-		time1 = time.time()
-		if((time1 - time0) > 70):
+		# wait till we have at least 64 counts for one of the more reliable sensors.
+		if(counts[4] >= 64 or counts[1] >= 64):
 
 			try:
 				dbg_step = 0
@@ -166,7 +164,7 @@ if __name__ == "__main__":
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
 			except:
-				# this can happen if z.B. we never get a valid count for the lux
+				# this can (and does) happen if z.B. we never get a valid count for the lux
 				# toss everything and start main loop over again.
 				print("computing averages failed: ", dbg_step)
 				if(args.debug):
@@ -197,6 +195,5 @@ if __name__ == "__main__":
 			if(args.debug):
 				print(counts, flush=True)
 
-			time0 = time1 = time.time()
 			for i in range(0,5):
 				t_vals[i] = vals[i] = counts[i] = 0
