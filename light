@@ -151,6 +151,12 @@ if __name__ == "__main__":
 		# wait till we have at least 64 counts for one of the more reliable sensors.
 		if(counts[4] >= 64 or counts[1] >= 64):
 
+			# XXX div by 0 workaround for wonky lux part.
+			if(vals[0] == 0 and counts[0] == 0):
+				if(args.debug):
+					print('!', end='', flush=True)
+				counts[0] = 1.0;
+
 			try:
 				dbg_step = 0
 				lux = "%.2f" % (vals[0] / counts[0])
@@ -168,6 +174,7 @@ if __name__ == "__main__":
 				# toss everything and start main loop over again.
 				print("computing averages failed: ", dbg_step)
 				if(args.debug):
+					print("t_vals: ", t_vals)
 					print("vals: ", vals)
 					print("counts: ", counts, flush=True)
 				time0 = time1 = time.time()
