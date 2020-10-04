@@ -32,7 +32,7 @@ to do:
 - [ ] build weather proof enclosure that's transparent between about 300nm - 1000nm
 - [x] fix whatever bug causes illuminance/bb data fall-out in bright weather. (silly for a light sensor)
 - [x] fix whatever causes so many broken reads in bright light
-- [ ] fix whatever bug causes the lux sensor to not return any valid data on cold dark early mornings
+- [x] fix whatever bug causes the lux sensor to not return any valid data on cold dark early mornings
 - [x] _actually_ move from windowsill to balcony
 - [x] autogain
 - [x] hook up graphing
