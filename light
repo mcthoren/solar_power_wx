@@ -182,7 +182,8 @@ if __name__ == "__main__":
 				time0 = time1 = time.time()
 				for i in range(0,5):
 					t_vals[i] = vals[i] = counts[i] = 0
-					fixup_lux_flag = False
+
+				fixup_lux_flag = False
 				continue
 
 			if(args.debug):
