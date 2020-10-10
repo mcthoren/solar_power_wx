@@ -179,7 +179,7 @@ if __name__ == "__main__":
 					print("t_vals: ", t_vals)
 					print("vals: ", vals)
 					print("counts: ", counts, flush=True)
-				time0 = time1 = time.time()
+
 				for i in range(0,5):
 					t_vals[i] = vals[i] = counts[i] = 0
 
