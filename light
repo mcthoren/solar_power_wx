@@ -90,6 +90,18 @@ def lux_calc(ch0, ch1, gain):
 			print("div0 ch0:", ch0_str, "ch1:", ch1_str, end='', flush=True)
 		return np.nan
 
+	# nominal for the data sheet is 16x gain and 402ms integration time
+	# so if gain is off we need to adjust for it
+	# datasheet pages 24, 26 and 27
+	if(gain < 0.5):
+		ch0 *= 16
+		ch1 *= 16
+
+	# if integration time is "1" (101ms) (it is) we need the following "scale factor"
+	# data sheet pages 26 and 27
+	ch0 *= 322/81
+	ch1 *= 322/81
+
 	ch1_ch0 = ch1 / ch0
 
 	if(ch1_ch0 > 0 and ch1_ch0 <= 0.5):
@@ -222,7 +234,7 @@ if __name__ == "__main__":
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
 				if(args.debug):
-					clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]))
+					clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]), gain)
 					print(" %", clux, "|", lux, "% ", end='', flush=True)
 				dbg_step = 6
 			except:
