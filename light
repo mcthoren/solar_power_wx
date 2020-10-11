@@ -144,7 +144,6 @@ if __name__ == "__main__":
 	wx.proof_dir(plot_d)
 
 	# init the tsl sensor
-	fixup_lux_flag = False
 	vis_ir.enabled = True
 	time.sleep(1)
 	vis_ir.gain = 0
@@ -218,8 +217,7 @@ if __name__ == "__main__":
 			if(vals[0] == 0 and counts[0] == 0):
 				if(args.debug):
 					print('!', end='', flush=True)
-				counts[0] = 1.0
-				fixup_lux_flag = True
+				counts[0] = np.nan
 
 			try:
 				dbg_step = 0
@@ -233,10 +231,11 @@ if __name__ == "__main__":
 				dbg_step = 4
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
-				if(args.debug):
-					clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]), gain)
-					print(" %", clux, "|", lux, "% ", end='', flush=True)
+				clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]), gain)
 				dbg_step = 6
+				if(args.debug):
+					print(" %", clux, "|", lux, "% ", end='', flush=True)
+				dbg_step = 7
 			except:
 				# this can (and does) happen if z.B. we never get a valid count for the lux
 				# toss everything and start main loop over again.
@@ -249,18 +248,12 @@ if __name__ == "__main__":
 				for i in range(0,5):
 					t_vals[i] = vals[i] = counts[i] = 0
 
-				fixup_lux_flag = False
 				continue
 
 			if(args.debug):
 				print('*', end='', flush=True)
 
-			# just ignore the garbage points
-			if(fixup_lux_flag or (float(bb) > 500 and float(ir) > 500 and float(lux) < 10)):
-				if(args.debug):
-					print('^', end='', flush=True)
-				lux = np.nan
-
+			lux = clux
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
@@ -280,5 +273,3 @@ if __name__ == "__main__":
 
 			for i in range(0,5):
 				t_vals[i] = vals[i] = counts[i] = 0
-
-			fixup_lux_flag = False
