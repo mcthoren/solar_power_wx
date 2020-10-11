@@ -223,11 +223,11 @@ if __name__ == "__main__":
 				dbg_step = 0
 				lux = "%.2f" % (vals[0] / counts[0])
 				dbg_step = 1
-				uvr = "%d" % (vals[1] / counts[1])
+				uvr = "%.2f" % (vals[1] / counts[1])
 				dbg_step = 2
-				bb = "%d" % (vals[2] / counts[2])
+				bb = "%.2f" % (vals[2] / counts[2])
 				dbg_step = 3
-				ir = "%d" % (vals[3] / counts[3])
+				ir = "%.2f" % (vals[3] / counts[3])
 				dbg_step = 4
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
