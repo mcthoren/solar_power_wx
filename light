@@ -16,7 +16,7 @@ dat_fname='light_levels'
 
 def conv_qs(data):
 	if data == b'??' or data == '??':
-		return 0.0
+		return np.nan
 	else:
 		return data
 
