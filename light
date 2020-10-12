@@ -74,7 +74,7 @@ def uv_read(uv):
 # https://cdn-shop.adafruit.com/datasheets/TSL2561.pdf, the returned values in
 # bright weather are clearly bullshit. reimplement ourselves so we can fight
 # with it and try to work out what's going on.
-def lux_calc(ch0, ch1, gain):
+def lux_calc(ch0, ch1, gain, int_time):
 	# bb := broadband is ch0
 	# ir := infrared is ch1
 
@@ -97,10 +97,15 @@ def lux_calc(ch0, ch1, gain):
 		ch0 *= 16
 		ch1 *= 16
 
-	# if integration time is "1" (101ms) (it is) we need the following "scale factor"
+	# if integration time is "0" (13.7ms) or "1" (101ms) we need the following "scale factors"
 	# data sheet pages 26 and 27
-	ch0 *= 322/81
-	ch1 *= 322/81
+	if(int_time == 0):
+		ch0 *= 322/11
+		ch1 *= 322/11
+
+	if(int_time == 1):
+		ch0 *= 322/81
+		ch1 *= 322/81
 
 	ch1_ch0 = ch1 / ch0
 
@@ -149,13 +154,16 @@ if __name__ == "__main__":
 	uv_sens = adafruit_veml6070.VEML6070(i2c, 'VEML6070_4_T')
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
+	# integration time (0 = 13.7ms, 1 = 101ms, 2 = 402ms)
+	int_time = 1
+
 	wx.proof_dir(plot_d)
 
 	# init the tsl sensor
 	vis_ir.enabled = True
 	time.sleep(1)
 	vis_ir.gain = 0
-	vis_ir.integration_time = 1
+	vis_ir.integration_time = int_time
 
 	# first reads are often kinda bogus
 	try:
@@ -239,7 +247,7 @@ if __name__ == "__main__":
 				dbg_step = 4
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
-				clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]), gain)
+				clux = "%.2f" % lux_calc((vals[2] / counts[2]), (vals[3] / counts[3]), gain, int_time)
 				dbg_step = 6
 				if(args.debug):
 					print(" %", clux, "|", lux, "% ", end='', flush=True)
