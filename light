@@ -141,6 +141,7 @@ def lux_calc(ch0, ch1, gain, int_time):
 if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Record, graph, and upload ambient light levels.')
 	parser.add_argument('-d', dest = 'debug', action = 'store_true', help='turn on debug chars')
+	parser.add_argument('-D', dest = 'moredebug', action = 'store_true', help='turn on more debug chars')
 	args = parser.parse_args()
 
 	i2c = busio.I2C(board.SCL, board.SDA)
@@ -152,6 +153,7 @@ if __name__ == "__main__":
 	# VEML6070_1_T		~125ms
 	# VEML6070_2_T		~250ms
 	# VEML6070_4_T		~500ms
+	uv_int_tarray = [62.5, 125, 250, 500]
 	uv_int_time = 'VEML6070_HALF_T'
 	uv_sens = adafruit_veml6070.VEML6070(i2c, uv_int_time)
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
@@ -202,13 +204,32 @@ if __name__ == "__main__":
 		t_vals[0] = vis_ir.lux
 
 		gain = vis_ir.gain
+		int_time = vis_ir.integration_time
 		bbt = vis_ir.broadband
 		irt = vis_ir.infrared
+
+		if(args.moredebug):
+			print("(", gain, ",", int_time, ")->", end='', flush=True)
+
 		if(isinstance(gain, (float, int)) and isinstance(bbt, (float, int)) and isinstance(irt, (float, int))):
-			if(bbt < 1.0 and irt < 1.0 and gain < 0.5):
-				vis_ir.gain = 1
-			if(bbt > 100 and irt > 100 and gain > 0.5):
-				vis_ir.gain = 0
+			if(bbt < 1.0 and irt < 1.0):
+				if(gain < 0.5):
+					vis_ir.gain = 1
+				if(gain > 0.5):
+					if(int_time < 2):
+						int_time += 1
+						vis_ir.integration_time = int_time
+
+			if(bbt > 100 and irt > 100):
+				if(gain > 0.5):
+					vis_ir.gain = 0
+				if(gain < 0.5):
+					if(int_time > 0):
+						int_time -= 1
+						vis_ir.integration_time = int_time
+
+		if(args.moredebug):
+			print("(", gain, ",", int_time, ")", end='', flush=True)
 
 		gain = vis_ir.gain			# we might have just changed this, recheck it.
 		if(isinstance(gain, (float, int))):	# we don't always get types that make sense.
@@ -305,7 +326,8 @@ if __name__ == "__main__":
 			ir = "%.2f" % (tir)
 			uvr = "%.2f" % (tuvr)
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
-			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
+			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\tvis_int_time: %s\tuv_int_time: %s\n" % \
+				 (ts, lux, uvr, bb, ir, gain, pi_t, int_time, uv_int_time)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
 			plot(ts, dat_fname)
 
