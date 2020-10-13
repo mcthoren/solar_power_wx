@@ -235,9 +235,9 @@ if __name__ == "__main__":
 				dbg_step = 1
 				uvr = "%.2f" % (vals[1] / counts[1])
 				dbg_step = 2
-				bb = "%.2f" % (vals[2] / counts[2])
+				tbb = (vals[2] / counts[2])
 				dbg_step = 3
-				ir = "%.2f" % (vals[3] / counts[3])
+				tir = (vals[3] / counts[3])
 				dbg_step = 4
 				pi_t = "%.2f" % (vals[4] / counts[4])
 				dbg_step = 5
@@ -263,7 +263,18 @@ if __name__ == "__main__":
 			if(args.debug):
 				print('*', end='', flush=True)
 
+		# scaling here appears linear with integration time, unlike in the lux calc???
+			if(int_time == 0):
+				tbb *= 402/13.7
+				tir *= 402/13.7
+
+			if(int_time == 1):
+				tbb *= 402/101
+				tir *= 402/101
+
 			lux = clux
+			bb = "%.2f" % (tbb)
+			ir = "%.2f" % (tir)
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
