@@ -241,7 +241,7 @@ if __name__ == "__main__":
 				dbg_step = 0
 				lux = "%.2f" % (vals[0] / counts[0])
 				dbg_step = 1
-				uvr = "%.2f" % (vals[1] / counts[1])
+				tuvr = (vals[1] / counts[1])
 				dbg_step = 2
 				tbb = (vals[2] / counts[2])
 				dbg_step = 3
@@ -253,7 +253,6 @@ if __name__ == "__main__":
 				dbg_step = 6
 				if(args.debug):
 					print(" %", clux, "|", lux, "% ", end='', flush=True)
-				dbg_step = 7
 			except:
 				# this can (and does) happen if z.B. we never get a valid count for the lux
 				# toss everything and start main loop over again.
@@ -271,7 +270,7 @@ if __name__ == "__main__":
 			if(args.debug):
 				print('*', end='', flush=True)
 
-		# scaling here appears linear with integration time, unlike in the lux calc???
+			# scaling here appears linear with integration time, unlike in the lux calc???
 			if(int_time == 0):
 				tbb *= 402/13.7
 				tir *= 402/13.7
@@ -280,9 +279,20 @@ if __name__ == "__main__":
 				tbb *= 402/101
 				tir *= 402/101
 
+			# scaling for uva data
+			if(uv_int_time == 'VEML6070_HALF_T'):
+				tuvr *= 8	# 500ms / 62.5ms
+
+			if(uv_int_time == 'VEML6070_1_T'):
+				tuvr *= 4	# 500ms / 125ms
+
+			if(uv_int_time == 'VEML6070_2_T'):
+				tuvr *= 2	# 500ms / 250ms
+
 			lux = clux
 			bb = "%.2f" % (tbb)
 			ir = "%.2f" % (tir)
+			uvr = "%.2f" % (tuvr)
 			ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\n" % (ts, lux, uvr, bb, ir, gain, pi_t)
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
