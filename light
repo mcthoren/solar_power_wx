@@ -145,7 +145,15 @@ if __name__ == "__main__":
 
 	i2c = busio.I2C(board.SCL, board.SDA)
 
-	uv_sens = adafruit_veml6070.VEML6070(i2c, 'VEML6070_1_T')
+
+	# the adafruit lib will take the following integration times
+	# https://learn.adafruit.com/adafruit-veml6070-uv-light-sensor-breakout?view=all
+	# VEML6070_HALF_T	~62.5ms
+	# VEML6070_1_T		~125ms
+	# VEML6070_2_T		~250ms
+	# VEML6070_4_T		~500ms
+	uv_int_time = 'VEML6070_HALF_T'
+	uv_sens = adafruit_veml6070.VEML6070(i2c, uv_int_time)
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
 	# integration time (0 = 13.7ms, 1 = 101ms, 2 = 402ms)
