@@ -194,36 +194,39 @@ if __name__ == "__main__":
 		# we get bogus values in the dark if we don't wait a bit first
 		time.sleep(0.5)
 
+		# run a couple reads after wake up to shake the sleep out.
 		t_vals[0] = vis_ir.lux
 		time.sleep(0.1)
 		t_vals[0] = vis_ir.lux
 		time.sleep(0.1)
 		t_vals[0] = vis_ir.lux
-		t_vals[2] = vis_ir.broadband
-		t_vals[3] = vis_ir.infrared
 
 		gain = vis_ir.gain
-		# bbt = vis_ir.broadband
-		# if isinstance(gain, (float, int)) and isinstance(bbt, (float, int)):
-		# 	if bbt <= 10 and gain < 0.5:
-		# 		vis_ir.gain = 1
-		# 	if bbt >= 1000 and gain > 0.5:
-		# 		vis_ir.gain = 0
+		bbt = vis_ir.broadband
+		irt = vis_ir.infrared
+		if(isinstance(gain, (float, int)) and isinstance(bbt, (float, int)) and isinstance(irt, (float, int))):
+			if(bbt < 1.0 and irt < 1.0 and gain < 0.5):
+				vis_ir.gain = 1
+			if(bbt > 100 and irt > 100 and gain > 0.5):
+				vis_ir.gain = 0
 
-		# gain = vis_ir.gain			# we might have just changed this, recheck it.
-		# if isinstance(gain, (float, int)):	# we don't always get types that make sense.
-		# 	if gain > 0.5:
-		# 		t_vals[2] = vis_ir.broadband / 16.0
-		# 		t_vals[3] = vis_ir.infrared / 16.0
-		# 	else:
-		# 		t_vals[2] = vis_ir.broadband
-		# 		t_vals[3] = vis_ir.infrared
+		gain = vis_ir.gain			# we might have just changed this, recheck it.
+		if(isinstance(gain, (float, int))):	# we don't always get types that make sense.
+			if(gain > 0.5):
+				t_vals[2] = vis_ir.broadband / 16.0
+				t_vals[3] = vis_ir.infrared / 16.0
+			else:
+				t_vals[2] = vis_ir.broadband
+				t_vals[3] = vis_ir.infrared
 
+		# do the last lux read with the final gain setting
+		t_vals[0] = vis_ir.lux
 		vis_ir.enabled = False
+
 		t_vals[4] = float(wx.pi_temp_read()) / 1000
 
 		for i in range(0,5):
-			if isinstance(t_vals[i], (float, int)):
+			if(isinstance(t_vals[i], (float, int))):
 				vals[i] += t_vals[i]
 				counts[i] += 1
 
