@@ -291,6 +291,12 @@ if __name__ == "__main__":
 			if(uv_int_time == 'VEML6070_2_T'):
 				tuvr *= 2	# 500ms / 250ms
 
+			# if the lux model inputs are 0, we can resonably expect 0 on the output
+			if(vals[2] == 0 and vals[3] == 0):
+				if(args.debug):
+					print('_', end='', flush=True)
+				lux = 0.00
+
 			# lux = clux
 			bb = "%.2f" % (tbb)
 			ir = "%.2f" % (tir)
