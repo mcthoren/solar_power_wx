@@ -49,7 +49,7 @@ def plot(ts, n_plate):
 	f_pts  = date.size - npoints
 	t_pts  = date.size
 
-	wx.graph(date[f_pts : t_pts], lux[f_pts : t_pts], "y-", "Approximate Illuminance", "Approximate Illuminance (lx)", plot_d+'light_lux.png')
+	wx.graph(date[f_pts : t_pts], lux[f_pts : t_pts], "y-", "Illuminance", "Illuminance (lx)", plot_d+'light_lux.png')
 	wx.graph(date[f_pts : t_pts], uva[f_pts : t_pts], "b-", "UVA Illuminance", "Illuminance (counts)", plot_d+'light_uva.png')
 	wx.graph(date[f_pts : t_pts], bb[f_pts : t_pts], "g-", "Broad Band Illuminance", "Illuminance (counts)", plot_d+'light_bb.png')
 	wx.graph(date[f_pts : t_pts], ir[f_pts : t_pts], "r-", "IR Illuminance", "Illuminance (counts)", plot_d+'light_ir.png')
