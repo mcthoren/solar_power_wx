@@ -172,7 +172,7 @@ if __name__ == "__main__":
 	# first reads are often kinda bogus
 	try:
 		if(args.debug):
-			print('+', end='', flush=True)
+			print('$', end='', flush=True)
 
 		lux = vis_ir.lux
 		bb = vis_ir.broadband
@@ -212,14 +212,14 @@ if __name__ == "__main__":
 			print("(", gain, ",", int_time, ")->", end='', flush=True)
 
 		if(isinstance(gain, (float, int)) and isinstance(bbt, (float, int)) and isinstance(irt, (float, int))):
-			if(bbt < 1.0 and irt < 1.0):
+			if(bbt < 4.0 and irt < 2.0):
 				if(gain < 0.5):
 					vis_ir.gain = 1
 				if(gain > 0.5):
 					if(int_time < 2):
 						int_time += 1
 						if(args.debug):
-							print('+:', int_time, end='', flush=True)
+							print('+', end='', flush=True)
 						vis_ir.integration_time = int_time
 
 			if(bbt > 100 and irt > 100):
@@ -229,7 +229,7 @@ if __name__ == "__main__":
 					if(int_time > 0):
 						int_time -= 1
 						if(args.debug):
-							print('-:', int_time, end='', flush=True)
+							print('-', end='', flush=True)
 						vis_ir.integration_time = int_time
 
 		if(args.moredebug):
