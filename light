@@ -218,6 +218,8 @@ if __name__ == "__main__":
 				if(gain > 0.5):
 					if(int_time < 2):
 						int_time += 1
+						if(args.debug):
+							print('+:', int_time, end='', flush=True)
 						vis_ir.integration_time = int_time
 
 			if(bbt > 100 and irt > 100):
@@ -226,6 +228,8 @@ if __name__ == "__main__":
 				if(gain < 0.5):
 					if(int_time > 0):
 						int_time -= 1
+						if(args.debug):
+							print('-:', int_time, end='', flush=True)
 						vis_ir.integration_time = int_time
 
 		if(args.moredebug):
