@@ -134,18 +134,18 @@ if __name__ == "__main__":
 
 	while True:
 
-#		uvt = uv_read(uv_sens)
-#		if(isinstance(uvt, (float, int))):
-#			if(uvt < 1.0 and uv_a_idx < 3):
-#				if(args.debug):
-#					print('^', end='', flush=True)
-#				# uv_a_idx += 1
-#				# uv_sens.integration_time(uv_dings_array[uv_a_idx])
-#			if(uvt > 100 and uv_a_idx > 0):
-#				if(args.debug):
-#					print('v', end='', flush=True)
-#				# uv_a_idx -= 1
-#				# uv_sens.integration_time(uv_dings_array[uv_a_idx])
+		uvt = uv_read(uv_sens)
+		if(isinstance(uvt, (float, int))):
+			if(uvt < 1.0 and uv_a_idx < 3):
+				if(args.debug):
+					print('^', end='', flush=True)
+				uv_a_idx += 1
+				uv_sens.integration_time = uv_dings_array[uv_a_idx]
+			if(uvt > 100 and uv_a_idx > 0):
+				if(args.debug):
+					print('v', end='', flush=True)
+				uv_a_idx -= 1
+				uv_sens.integration_time = uv_dings_array[uv_a_idx]
 
 		t_vals[1] = uv_read(uv_sens)
 
