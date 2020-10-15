@@ -57,6 +57,9 @@ def plot(ts, n_plate):
 
 # part of the ongoing effort to keeps the two sensors from locking up when it's bright out.
 def uv_read(uv):
+	if(uv == 0):
+		return np.nan
+
 	uv.wake()
 
 	# we get 0 if we don't wait first.
@@ -142,6 +145,7 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser(description='Record, graph, and upload ambient light levels.')
 	parser.add_argument('-d', dest = 'debug', action = 'store_true', help='turn on debug chars')
 	parser.add_argument('-D', dest = 'moredebug', action = 'store_true', help='turn on more debug chars')
+	parser.add_argument('-k', dest = 'killuv', action = 'store_true', help='kill the uv sensor')
 	args = parser.parse_args()
 
 	i2c = busio.I2C(board.SCL, board.SDA)
@@ -155,7 +159,14 @@ if __name__ == "__main__":
 	# VEML6070_4_T		~500ms
 	uv_int_tarray = [62.5, 125, 250, 500]
 	uv_int_time = 'VEML6070_HALF_T'
-	uv_sens = adafruit_veml6070.VEML6070(i2c, uv_int_time)
+
+	# sometimes our uv sensor goes away, and only powering it off for a minute or two
+	# and restarting it will bring it back, which is hard to do remotely. tmep hack.
+	if(args.killuv):
+		uv_sens = 0
+	else:
+		uv_sens = adafruit_veml6070.VEML6070(i2c, uv_int_time)
+
 	vis_ir = adafruit_tsl2561.TSL2561(i2c)
 
 	# integration time (0 = 13.7ms, 1 = 101ms, 2 = 402ms)
