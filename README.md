@@ -35,6 +35,8 @@ to do:
 - [x] fix whatever bug causes the lux sensor to not return any valid data on cold dark early mornings
 - [x] _actually_ move from windowsill to balcony
 - [x] autogain
+- [x] scale IR/BB integration time automatically
+- [x] scale UVA integration time automatically
 - [x] hook up graphing
 - [x] hook up syncing to web server
 - [x] finish readme
