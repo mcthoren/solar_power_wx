@@ -279,6 +279,12 @@ if __name__ == "__main__":
 			dat = "%s\tlux: %s\tUVA: %s\tBB: %s\tIR: %s\tGain: %s\tPi_temp: %s\tvis_int_time: %s\tuv_int_time: %s\n" % \
 				 (ts, lux, uvr, bb, ir, gain, pi_t, int_time, uv_dings_array[uv_a_idx])
 			wx.write_out_dat_stamp(ts, dat_fname, dat, wx_dir)
+
+			# it's solar powered. i'm in n.eu. it doesn't always enjoy clean shutdowns,
+			# and then garbage in the dat file prevents the graphing from working on restart.
+			# try a sync, and see if that helps. how much garbage should we write to a closed file?
+			os.sync()
+
 			plot(ts, dat_fname)
 
 			if(args.debug):
