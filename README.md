@@ -17,5 +17,5 @@ to do:
 - [x] test hardware
 - [x] enough code to collect data
 - [x] hook up plotting
-- [ ] webpage
+- [x] webpage
 - [ ] calibrate
