@@ -18,16 +18,16 @@ set y2label "(V)"
 dat_f='/home/ghz/solar_power_wx/data/2-3_day.power'
 
 set output '/home/ghz/solar_power_wx/plots/batt_voltage.png'
-plot dat_f using 1:($3 / 1000) title 'Battery Voltage (Volts)' with lines linecolor rgb "#00ff00"
+plot dat_f using 1:6 title 'Battery Voltage (V)' with lines linecolor rgb "#00ff00"
 
-set ylabel "(A)"
-set y2label "(A)"
+set ylabel "(mA)"
+set y2label "(mA)"
 
 set output '/home/ghz/solar_power_wx/plots/battery_current.png'
-plot dat_f using 1:($6 / 1000) title 'Battery Current (Amps)' with lines linecolor rgb "#00ffff"
+plot dat_f using 1:3 title 'Battery Current (mA)' with lines linecolor rgb "#00ffff"
 
-set ylabel "(W)"
-set y2label "(W)"
+set ylabel "(mW)"
+set y2label "(mW)"
 
 set output '/home/ghz/solar_power_wx/plots/power.png'
-plot dat_f using 1:($9 / 1000) title 'Power Use (Watts)' with lines linecolor rgb "#ff00ff"
+plot dat_f using 1:9 title 'Power Use (mW)' with lines linecolor rgb "#ff00ff"
