@@ -18,7 +18,7 @@ if __name__ == "__main__":
 	while True:
 
 		ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
-		dat_s = "%s\tCurrent: %.2f mA,\tVoltage: %.2f V,\tPower:%.2f mW\n" % \
+		dat_s = "%s\tCurrent: %.2f mA,\tVoltage: %.2f V,\tPower: %.2f mW\n" % \
 			(ts, ina260.current, ina260.voltage, ina260.power)
 
 		wx.write_out_dat_stamp(ts, dat_fname, dat_s, wx_dir)
