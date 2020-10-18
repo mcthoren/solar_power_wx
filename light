@@ -272,6 +272,12 @@ if __name__ == "__main__":
 					print('_', end='', flush=True)
 				lux = 0.00
 
+			# it's gotten better, but we still get some wobbles in the lux calc.
+			if(tbb > 5000 and tir > 5000 and float(lux) < 10):
+				if(args.debug):
+					print('#', end='', flush=True)
+				lux = np.nan
+
 			bb = "%.2f" % (tbb)
 			ir = "%.2f" % (tir)
 			uvr = "%.2f" % (tuvr)
