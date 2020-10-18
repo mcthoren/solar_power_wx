@@ -11,11 +11,11 @@ To install the prerequisites one needs sth like the following:
 
 to do:
 - [x] lic
-- [ ] readme
+- [x] readme
 - [x] protoype hardware
 - [x] build hardware
-- [ ] test hardware
-- [ ] enough code to collect data
-- [ ] hook up plotting
+- [x] test hardware
+- [x] enough code to collect data
+- [x] hook up plotting
 - [ ] webpage
 - [ ] calibrate
