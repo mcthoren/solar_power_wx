@@ -1,0 +1,26 @@
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
+# https://www.adafruit.com/product/4226
+
+import time, board, datetime, sys
+import adafruit_ina260
+
+sys.path.append('/home/ghz/wxlib')
+import wxlib as wx
+     
+i2c = board.I2C()
+ina260 = adafruit_ina260.INA260(i2c)
+
+dat_fname='solar_power'
+wx_dir = "/home/ghz/solar_power_wx"
+
+if __name__ == "__main__":
+	while True:
+
+		ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
+		dat_s = "%s\tCurrent: %.2f mA,\tVoltage: %.2f V,\tPower:%.2f mW\n" % \
+			(ts, ina260.current, ina260.voltage, ina260.power)
+
+		wx.write_out_dat_stamp(ts, dat_fname, dat_s, wx_dir)
+		print(dat_s, end='')
+		time.sleep(1)
