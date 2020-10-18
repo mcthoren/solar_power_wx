@@ -6,4 +6,4 @@
 
 /home/ghz/solar_power_wx/grab_48h
 gnuplot /home/ghz/solar_power_wx/solar_power.gnuplot
-/usr/bin/rsync --timeout=60 -ur /home/ghz/solar_power_wx/* wx8_sync:/wx8/
+/usr/bin/rsync -e 'ssh -q' --timeout=60 -ur /home/ghz/solar_power_wx/* wx8_sync:/wx8/
