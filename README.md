@@ -9,6 +9,11 @@ To install the prerequisites one needs sth like the following:
   * https://learn.adafruit.com/adafruit-ina260-current-voltage-power-sensor-breakout?view=all
   * https://www.ti.com/lit/ds/symlink/ina260.pdf
 
+This code can be found in the following places:
+* https://wx8.slackology.net/solar_power.html	<--page
+* https://github.com/mcthoren/solar_power_wx	<--code
+* https://wx8.slackology.net/			<--code, data, plots, page
+
 to do:
 - [x] lic
 - [x] readme
