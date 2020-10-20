@@ -31,3 +31,9 @@ set y2label "(W)"
 
 set output '/home/ghz/solar_power_wx/plots/power.png'
 plot dat_f using 1:($9 / 1000) title 'Power Use (W)' with lines linecolor rgb "#0000bb"
+
+set ylabel "(°C)"
+set y2label "(°C)"
+
+set output '/home/ghz/solar_power_wx/plots/pitemp.png'
+plot dat_f using 1:12 title 'Pi Temp (°C)' with lines linecolor rgb "#bb0000"
