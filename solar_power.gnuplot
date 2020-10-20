@@ -36,4 +36,4 @@ set ylabel "(°C)"
 set y2label "(°C)"
 
 set output '/home/ghz/solar_power_wx/plots/pitemp.png'
-plot dat_f using 1:12 title 'Pi Temp (°C)' with lines linecolor rgb "#bb0000"
+plot dat_f using 1:12 title 'Pi Temp (°C)' with lines linecolor rgb "#ff0000"
