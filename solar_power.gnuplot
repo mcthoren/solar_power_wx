@@ -9,8 +9,8 @@ set timefmt "%Y%m%d%H%M%S"
 set grid
 set term png size 1900, 512 font ",10"
 
-set format y "%.2f"
-set format y2 "%.2f"
+set format y "%.1f"
+set format y2 "%.1f"
 
 set ylabel "(V)"
 set y2label "(V)"
@@ -26,8 +26,8 @@ set y2label "(mA)"
 set output '/home/ghz/solar_power_wx/plots/battery_current.png'
 plot dat_f using 1:3 title 'Battery Current (mA)' with lines linecolor rgb "#00bbbb"
 
-set ylabel "(mW)"
-set y2label "(mW)"
+set ylabel "(W)"
+set y2label "(W)"
 
 set output '/home/ghz/solar_power_wx/plots/power.png'
-plot dat_f using 1:9 title 'Power Use (mW)' with lines linecolor rgb "#0000bb"
+plot dat_f using 1:($9 / 1000) title 'Power Use (W)' with lines linecolor rgb "#0000bb"
