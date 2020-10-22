@@ -20,11 +20,11 @@ dat_f='/home/ghz/solar_power_wx/data/2-3_day.power'
 set output '/home/ghz/solar_power_wx/plots/batt_voltage.png'
 plot dat_f using 1:6 title 'Battery Voltage (V)' with lines linecolor rgb "#00aa00"
 
-set ylabel "(mA)"
-set y2label "(mA)"
+set ylabel "(A)"
+set y2label "(A)"
 
 set output '/home/ghz/solar_power_wx/plots/battery_current.png'
-plot dat_f using 1:3 title 'Battery Current (mA)' with lines linecolor rgb "#00bbbb"
+plot dat_f using 1:($3 / 1000) title 'Battery Current (A)' with lines linecolor rgb "#00bbbb"
 
 set ylabel "(W)"
 set y2label "(W)"
