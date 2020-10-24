@@ -1,0 +1,33 @@
+#!/usr/bin/perl -T
+
+use strict;
+use warnings;
+
+my ($num, $w_sum, $a_sum, $v_sum) = (0, 0, 0, 0);
+
+die unless ($#ARGV == 0);
+
+my $read_f = $ARGV[0] ;
+
+die unless (-e $read_f);
+
+open(IN, "<", $read_f) or die "omg! can't open input file: $read_f";
+
+while (<IN>) {
+	chomp;
+	my ($x, $a, $current, $y, $q, $voltage, $z) = split;
+	$w_sum += $current * $voltage; # [mA] * [V]
+	$a_sum += $current; 
+	$v_sum += $voltage; 
+	$num++;
+}
+
+printf "Avg Power: %.2f mW\n", $w_sum / $num;
+printf "Avg Current: %.2f mA\n", $a_sum / $num;
+printf "Avg Batt Voltage: %.2f V\n", $v_sum / $num;
+
+# [V] * [mA] / 1000 [mA/A] * 16 [s] * (1 [h] / 3600 [s])
+printf "Energy Balance: %.2f Wh\n", $v_sum * $a_sum / 1000 * 16 / 3600 / $num;
+printf "Charge Balance: %.2f Ah\n", $a_sum / 1000 * (16/3600);
+
+close(IN);
