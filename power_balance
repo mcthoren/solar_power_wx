@@ -35,6 +35,7 @@ printf "Avg Power: %.2f mW\n", $w_sum / $num;
 printf "Avg Current: %.2f mA\n", $a_sum / $num;
 printf "Avg Batt Voltage: %.2f V\n", $v_sum / $num;
 
+# $v_sum / $num here gives us avg voltage.
 # [V] * [mA] / 1000 [mA/A] * 16 [s] * (1 [h] / 3600 [s])
 printf "Energy Balance: %.2f Wh\n", $v_sum * $a_sum / 1000 * 16 / 3600 / $num;
 printf "Charge Balance: %.2f Ah\n", $a_sum / 1000 * (16/3600);
