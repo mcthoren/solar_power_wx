@@ -11,4 +11,4 @@ DATD="${HD}/data/${YD}"
 
 CHG_BAL="$( ${HD}/power_balance "${DATD}/solar_power.${DD}" | grep Charge )"
 
-echo -e "${DD}\t${CHG_BAL}" >> "${DATD}/solar_power.charge_bal.${YD}"
+echo -e "${DD}\t${CHG_BAL}" >> "${HD}/data/solar_power.charge_bal"
