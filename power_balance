@@ -3,13 +3,22 @@
 use strict;
 use warnings;
 
+sub usage() {
+	print "usage: $0 filename\n";
+	exit;
+}
+
 my ($num, $w_sum, $a_sum, $v_sum) = (0, 0, 0, 0);
 
-die unless ($#ARGV == 0);
+unless ($#ARGV == 0) {
+	usage();
+}
 
 my $read_f = $ARGV[0] ;
 
-die unless (-e $read_f);
+unless (-e $read_f) {
+	usage;
+}
 
 open(IN, "<", $read_f) or die "omg! can't open input file: $read_f";
 
