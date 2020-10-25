@@ -1,10 +1,13 @@
 #!/usr/bin/zsh
 
+# this is meant to be use from a crontab entry like so:
+# min	hour	mday	month	wday	command
+# 59	23	*	*	*	~/solar_power_wx/charge_bal_stats
+
 HD="/home/ghz/solar_power_wx"
 YD="$(date +%Y)"
 DD="$(date +%Y%m%d)"
 DATD="${HD}/data/${YD}"
-
 
 CHG_BAL="$( ${HD}/power_balance "${DATD}/solar_power.${DD}" | grep Charge )"
 
