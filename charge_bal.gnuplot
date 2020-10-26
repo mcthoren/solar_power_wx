@@ -12,6 +12,8 @@ set term png size 1900, 512 font ",10"
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics
 set grid mxtics
+set format y "%.1f"
+set format y2 "%.1f"
 
 dat_f='/home/ghz/solar_power_wx/data/solar_power.charge_bal'
 
