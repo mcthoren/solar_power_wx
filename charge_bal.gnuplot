@@ -11,7 +11,9 @@ set y2label "Charge (Ah)"
 set term png size 1900, 512 font ",10"
 set xtics auto rotate by 30 offset -6.8, -2.2
 set mxtics
+set mytics
 set grid mxtics
+set grid mytics
 set format y "%.1f"
 set format y2 "%.1f"
 
