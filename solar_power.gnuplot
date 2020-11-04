@@ -23,12 +23,16 @@ plot dat_f using 1:6 title 'Battery Voltage (V)' with lines linecolor rgb "#00aa
 
 set ylabel "(A)"
 set y2label "(A)"
+set format y "%.2f"
+set format y2 "%.2f"
 
 set output '/home/ghz/solar_power_wx/plots/battery_current.png'
 plot dat_f using 1:($3 / 1000) title 'Battery Current (A)' with lines linecolor rgb "#00bbbb"
 
 set ylabel "(W)"
 set y2label "(W)"
+set format y "%.1f"
+set format y2 "%.1f"
 
 set output '/home/ghz/solar_power_wx/plots/power.png'
 # plot dat_f using 1:($9 / 1000) title 'Power Use (W)' with lines linecolor rgb "#0000bb"
