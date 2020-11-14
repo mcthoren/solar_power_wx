@@ -16,6 +16,7 @@ set grid mxtics
 set grid mytics
 set format y "%.1f"
 set format y2 "%.1f"
+set xrange ["20201019":]
 
 dat_f='/home/ghz/solar_power_wx/data/solar_power.charge_bal'
 
