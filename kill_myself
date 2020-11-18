@@ -1,0 +1,9 @@
+#!/usr/bin/zsh
+
+echo "Goodbye cruel European insolation!" | /usr/bin/mail -s "$(/bin/hostname) is dying. $(/bin/date -u +%FT%T%Z)" root
+
+/bin/sync
+/bin/sync
+
+# we have a sudo rule for this
+/usr/bin/sudo /sbin/halt
