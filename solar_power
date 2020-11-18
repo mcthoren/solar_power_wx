@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # https://www.adafruit.com/product/4226
 
-import time, board, datetime, sys
+import time, board, datetime, sys, os
 import adafruit_ina260
 
 sys.path.append('/home/ghz/wxlib')
@@ -11,6 +11,7 @@ import wxlib as wx
 i2c = board.I2C()
 ina260 = adafruit_ina260.INA260(i2c)
 
+time_to_die = 0
 dat_fname='solar_power'
 wx_dir = "/home/ghz/solar_power_wx"
 
@@ -18,6 +19,8 @@ if __name__ == "__main__":
 	while True:
 
 		ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
+		ina_voltage = ina260.voltage
+
 		# 2020-10-31T072303Z: we charge the battery and flip the current measurement pi around.
 		# we were originally wired to measure the down stream pi current, and the battery voltage directly.
 		# with the flip we should be able to measure the current of both the down stream pi and ourselves,
@@ -26,7 +29,18 @@ if __name__ == "__main__":
 		# given the most current we've seen thru the thing so far is 4 Amps, that will lead to a max error of:
 		# (V = IR) => V = 4 Amps * 0.002 Ohms = 0.008 Volts. Which i'm not going to worry about compensating for.
 		dat_s = "%s\tCurrent: %.2f mA,\tVoltage: %.2f V,\tPower: %.2f mW\tPi_temp: %.2f °C\n" % \
-			(ts, -ina260.current, ina260.voltage, ina260.power, float(wx.pi_temp_read()) / 1000)
+			(ts, -ina260.current, ina_voltage, ina260.power, float(wx.pi_temp_read()) / 1000)
 
 		wx.write_out_dat_stamp(ts, dat_fname, dat_s, wx_dir)
+
+		if(ina_voltage <= 10.5):
+			time_to_die += 1
+		else:
+			time_to_die = 0
+
+		# the charge controller kills the load if the batt drops below 10.6 V
+		# we however sit between the charge controller and the batt. so enforce low voltage protection ourselves
+		if(time_to_die >= 4):
+			os.system('/home/ghz/solar_power_wx/kill_myself')
+
 		time.sleep(16)

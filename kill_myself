@@ -2,6 +2,9 @@
 
 echo "Goodbye cruel European insolation!" | /usr/bin/mail -s "$(/bin/hostname) is dying. $(/bin/date -u +%FT%T%Z)" root
 
+# give the mail time to send. good luck.
+sleep 8
+
 /bin/sync
 /bin/sync
 
