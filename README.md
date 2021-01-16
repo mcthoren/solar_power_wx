@@ -23,4 +23,4 @@ to do:
 - [x] enough code to collect data
 - [x] hook up plotting
 - [x] webpage
-- [ ] calibrate
+- [x] calibrate
