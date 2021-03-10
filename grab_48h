@@ -3,6 +3,9 @@
 use strict;
 use warnings;
 use POSIX qw(strftime);
+use utf8;
+use open qw(:std :utf8);
+use Encode qw(encode decode);
 
 my $p_flag = 0;
 
