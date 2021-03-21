@@ -16,7 +16,7 @@ set format y2 "%.2f"
 set ylabel "(V)"
 set y2label "(V)"
 
-dat_f='/home/ghz/solar_power_wx/data/2-3_day.power'
+dat_f='/home/ghz/solar_power_wx/data/solar_power.2-3_day'
 
 set output '/home/ghz/solar_power_wx/plots/batt_voltage.png'
 plot dat_f using 1:6 title 'Battery Voltage (V)' with lines linecolor rgb "#00aa00"
