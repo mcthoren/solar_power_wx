@@ -14,5 +14,6 @@ cd "${HD}" || exit
 CHG_BAL="$( ${HD}/power_balance "${DATD}/solar_power.${DD}" | grep Charge )"
 
 echo -e "${DD}\t${CHG_BAL}" >> "${HD}/data/solar_power.charge_bal"
+tail -30 "${HD}/data/solar_power.charge_bal" > "${HD}/data/solar_power.charge_bal.30"
 
 /usr/bin/gnuplot "${HD}/charge_bal.gnuplot"
