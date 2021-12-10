@@ -2,7 +2,7 @@
 # -*- coding: UTF-8 -*-
 # https://www.adafruit.com/product/4226
 
-import time, board, datetime, sys, os
+import time, board, sys, os
 import adafruit_ina260
 
 sys.path.append('/home/ghz/wxlib')
@@ -18,7 +18,7 @@ wx_dir = "/home/ghz/solar_power_wx"
 if __name__ == "__main__":
 	while True:
 
-		ts = datetime.datetime.fromtimestamp(time.time()).strftime("%Y%m%d%H%M%S")
+		ts = time.strftime("%Y%m%d%H%M%S", time.gmtime())
 		ina_voltage = ina260.voltage
 
 		# 2020-10-31T072303Z: we charge the battery and flip the current measurement pi around.
