@@ -14,6 +14,8 @@ This code can be found in the following places:
 * https://github.com/mcthoren/solar_power_wx	<--code
 * https://wx8.slackology.net/			<--code, data, plots, page
 
+
+The finished hardware:
 ![Solar Power Pi](https://darkdata.org/ghz/images/docs/solar_power_pi.png)
 
 to do:
