@@ -16,6 +16,7 @@ This code can be found in the following places:
 
 
 The finished hardware:
+
 ![Solar Power Pi](https://darkdata.org/ghz/images/docs/solar_power_pi.png)
 
 to do:
