@@ -1,15 +1,16 @@
 set title "Daily Battery Charge Balance"
 set y2tics
+set link y2
 set key outside below
 set xdata time;
 set timefmt "%Y%m%d"
-set xlabel "Time (UTC)" offset 0.0, -1.6;
+set xlabel "Time (UTC)" offset 0.0, -2.6;
 set format x "%F"
 set grid
 set ylabel "Charge (Ah)"
 set y2label "Charge (Ah)"
 set term png size 1900, 512 font ",10"
-set xtics auto rotate by 30 offset -6.8, -2.2
+set xtics auto rotate by 30 offset -6.2, -3.0
 set xrange [:] noextend
 set mxtics
 set mytics
