@@ -7,4 +7,4 @@
 /home/ghz/repos/weather_tools/grab_48h /home/ghz/solar_power_wx/data solar_power
 gnuplot /home/ghz/solar_power_wx/solar_power.gnuplot
 sync
-/usr/bin/rsync -e 'ssh -q' --timeout=55 -ur /home/ghz/solar_power_wx/* wx8_sync:/wx8/ # 2> /dev/null
+/usr/bin/rsync -e 'ssh -q' --timeout=55 -ur /home/ghz/solar_power_wx/* wx8_sync:/wx8/ 2> /dev/null
