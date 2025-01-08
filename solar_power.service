@@ -1,0 +1,11 @@
+[Unit]
+Description=Measure solar charging info and batt status.
+After=network.target
+
+[Service]
+User=ghz
+WorkingDirectory=/home/ghz/solar_power_wx
+ExecStart=/home/ghz/solar_power_wx/solar_power
+
+[Install]
+WantedBy=multi-user.target
