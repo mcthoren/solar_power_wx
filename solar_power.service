@@ -1,6 +1,16 @@
 [Unit]
 Description=Measure solar charging info and batt status.
-After=network.target
+After=network.target systemd-timesyncd.service systemd-udevd.service systemd-udev-settle.service
+Requires=systemd-udevd.service systemd-udev-settle.service
+
+# systemd tries to start us before our i2c-1 dev is alive.
+# if we wait for it to be alive, systemd starts us before udev has set the right perms on it.
+# this is a solution that worked for me. but i i figured it's prly just simpler to require the
+# udev noise to finish first. this will be left here for the other poor bastards that run across
+# systemd.
+# https://forums.raspberrypi.com/viewtopic.php?t=221507
+# Requires=dev-i2c\x2d1.device
+# After=dev-i2c\x2d1.device
 
 [Service]
 User=ghz
