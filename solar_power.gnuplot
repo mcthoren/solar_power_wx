@@ -9,7 +9,7 @@ set xdata time;
 set format x "%F\n%TZ"
 set timefmt "%Y%m%d%H%M%S"
 set grid
-set term png size 1900, 512 font ",10"
+set term pngcairo size 1900, 512 font ",10"
 
 set format y "%.2f"
 set format y2 "%.2f"
