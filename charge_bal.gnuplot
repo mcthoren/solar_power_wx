@@ -4,7 +4,7 @@ set link y2
 set key outside below
 set xdata time;
 set timefmt "%Y%m%d"
-set xlabel "Time (UTC)" offset 0.0, -2.6;
+set xlabel "Time (UTC)\n" offset 0.0, -2.6;
 set format x "%F"
 set grid
 set ylabel "Charge (Ah)"
