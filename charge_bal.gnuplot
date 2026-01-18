@@ -9,7 +9,7 @@ set format x "%F"
 set grid
 set ylabel "Charge (Ah)"
 set y2label "Charge (Ah)"
-set term png size 1900, 512 font ",10"
+set term svg size 1900, 700 font ",13" background '0xffffff'
 set xtics auto rotate by 30 offset -6.2, -3.0
 set xrange [:] noextend
 set mxtics
@@ -25,9 +25,9 @@ dat_f='/home/ghz/solar_power_wx/data/solar_power.charge_bal'
 dat_f_30='/home/ghz/solar_power_wx/data/solar_power.charge_bal.30'
 
 set style fill solid 0.50 noborder
-set output '/home/ghz/solar_power_wx/plots/charge_bal.png'
+set output '/home/ghz/solar_power_wx/plots/charge_bal.svg'
 plot dat_f using 1:4 t 'Charge (Ah)' with boxes lc rgb "#bb00ff"
 
 set title "Daily Battery Charge Balance for the Last 30 Days"
-set output '/home/ghz/solar_power_wx/plots/charge_bal.30.png'
+set output '/home/ghz/solar_power_wx/plots/charge_bal.30.svg'
 plot dat_f_30 using 1:4 t 'Charge (Ah)' with boxes lc rgb "#bb00ff"
